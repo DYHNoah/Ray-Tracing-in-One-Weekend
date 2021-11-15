@@ -5,6 +5,8 @@
 #include <cstdlib>
 #include <limits>
 #include <memory>
+#include <functional>
+#include <random>
 
 //  Usings
 
@@ -25,9 +27,25 @@ inline double degrees_to_radians(double degrees) {
 inline double ffmin(double a, double b) { return a <= b ? a : b; }
 inline double ffmax(double a, double b) { return a >= b ? a : b; }
 
+inline double clamp(double x, double min, double max) {
+    if (x < min)  return min;
+    if (x > max)  return max;
+    return x;    
+}
+
 // Common Headers
 
 #include "ray.h"
 #include "vec3.h"
+#include "camera.h"
+
+// Random Functions
+inline double random_double() {
+    static std::uniform_real_distribution<double> distribution(0.0, 1.0);
+    static std::mt19937 generator;
+    static std::function<double()> rand_generator =
+	std::bind(distribution, generator);
+    return rand_generator();
+}
 
 #endif
